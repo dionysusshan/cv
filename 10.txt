@@ -1,0 +1,522 @@
+Exp 1:
+Displaying an Existing Grayscale Image
+% Load an image from a file
+img = imread('your_image.png');
+% Convert to grayscale if it's not already
+img_gray = rgb2gray(img);
+% Display the grayscale image
+imshow(img_gray);
+title('Grayscale Image');
+
+Experiment 2:
+Histogram Equalization is a technique used in image processing to improve the contrast of an image. Here's a MATLAB code snippet that performs histogram equalization on a grayscale image:
+
+% Read the grayscale image
+image = imread('your_image.png');  % Replace 'your_image.png' with your image file
+% Check if the image is grayscale
+if size(image, 3) == 3
+    error('Image must be grayscale for histogram equalization.');
+end
+
+% Perform histogram equalization
+equalizedImage = histeq(image);
+
+% Display the original and equalized images
+subplot(1, 2, 1);
+imshow(image);
+title('Original Image');
+
+subplot(1, 2, 2);
+imshow(equalizedImage);
+title('Equalized Image');
+
+
+Experiment 3:
+Non-linear filtering is used to process images in ways that are not linear, often to reduce noise or enhance features. One popular non-linear filter is the median filter, which is effective for removing salt-and-pepper noise while preserving edges.
+Here’s a MATLAB code snippet for applying a median filter, which is a common type of non-linear filter:
+
+% Read the grayscale image
+image = imread('your_image.png');  % Replace 'your_image.png' with your image file
+
+% Check if the image is grayscale
+if size(image, 3) == 3
+    image = rgb2gray(image);  % Convert to grayscale if it's a color image
+end
+
+% Apply median filtering
+filterSize = 3;  % Size of the median filter (e.g., 3x3)
+filteredImage = medfilt2(image, [filterSize filterSize]);
+
+% Display the original and filtered images
+subplot(1, 2, 1);
+imshow(image);
+title('Original Image');
+
+subplot(1, 2, 2);
+imshow(filteredImage);
+title('Median Filtered Image');
+ 
+Experiment 4:
+Edge detection is a fundamental task in image processing, used to identify boundaries within images. In MATLAB, several operators are commonly used for edge detection, including the Sobel, Prewitt, and Canny operators. Below is an example of how to apply each of these edge detection operators in MATLAB.
+Code for Edge Detection using Sobel, Prewitt, and Canny Operators
+% Read the grayscale image
+image = imread('your_image.png');  % Replace 'your_image.png' with your image file
+
+% Convert to grayscale if the image is in color
+if size(image, 3) == 3
+    image = rgb2gray(image);
+end
+
+% Convert image to double for edge detection
+image = double(image);
+
+% Apply Sobel Edge Detection
+sobelEdges = edge(image, 'sobel');
+
+% Apply Prewitt Edge Detection
+prewittEdges = edge(image, 'prewitt');
+
+% Apply Canny Edge Detection
+cannyEdges = edge(image, 'canny');
+
+% Display the results
+subplot(2, 2, 1);
+imshow(image, []);
+title('Original Image');
+
+subplot(2, 2, 2);
+imshow(sobelEdges);
+title('Sobel Edge Detection');
+
+subplot(2, 2, 3);
+imshow(prewittEdges);
+title('Prewitt Edge Detection');
+
+subplot(2, 2, 4);
+imshow(cannyEdges);
+title('Canny Edge Detection');
+o	
+Experiment 5:
+The 2D Discrete Fourier Transform (DFT) and Discrete Cosine Transform (DCT) are fundamental tools in image processing and signal analysis. Below are MATLAB code snippets to compute both the 2D DFT and 2D DCT of an image.
+
+2D Discrete Fourier Transform (DFT) Code
+The 2D DFT can be computed using the fft2 function in MATLAB, which computes the 2D Fast Fourier Transform. Here's how you can compute and display the magnitude spectrum and phase of the 2D DFT:
+% Read the grayscale image
+image = imread ('your_image.png');  % Replace 'your_image.png' with your image file
+
+% Convert to grayscale if the image is in color
+if size(image, 3) == 3
+    image = rgb2gray(image);
+end
+
+% Convert image to double for DFT
+image = double(image);
+
+% Compute the 2D DFT
+dftImage = fft2(image);
+
+% Shift zero-frequency component to the center
+dftImageShifted = fftshift(dftImage);
+
+% Compute magnitude and phase
+magnitude = abs(dftImageShifted);
+phase = angle(dftImageShifted);
+
+% Display the results
+subplot(1, 2, 1);
+imshow(log(1 + magnitude), []);
+title('Magnitude Spectrum');
+
+subplot(1, 2, 2);
+imshow(phase, []);
+title('Phase Spectrum');
+1.	
+
+2D Discrete Cosine Transform (DCT) Code
+The 2D DCT can be computed using the dct2 function in MATLAB. Here's how to compute and display the 2D DCT:
+% Read the grayscale image
+image = imread('your_image.png');  % Replace 'your_image.png' with your image file
+
+% Convert to grayscale if the image is in color
+if size(image, 3) == 3
+    image = rgb2gray(image);
+end
+
+% Convert image to double for DCT
+image = double(image);
+
+% Compute the 2D DCT
+dctImage = dct2(image);
+
+% Shift the DCT coefficients for visualization
+dctImageShifted = dctshift(dctImage);
+
+% Display the results
+figure;
+
+imshow(log(1 + abs(dctImageShifted)), []);
+title('DCT Coefficients');
+1.	
+
+Experiment 6:
+Filtering in the frequency domain involves transforming an image into its frequency components, applying a filter in the frequency domain, and then transforming the image back to the spatial domain. This approach is useful for various applications, including noise reduction and image enhancement.
+Here’s a step-by-step MATLAB code snippet that demonstrates how to apply a low-pass filter in the frequency domain:
+% Read the grayscale image
+image = imread('your_image.png');  % Replace 'your_image.png' with your image file
+
+% Convert to grayscale if the image is in color
+if size(image, 3) == 3
+    image = rgb2gray(image);
+end
+
+% Convert image to double for processing
+image = double(image);
+
+% Compute the 2D DFT
+dftImage = fft2(image);
+
+% Shift zero-frequency component to the center
+dftImageShifted = fftshift(dftImage);
+
+% Define a low-pass filter
+[M, N] = size(image);
+[u, v] = meshgrid(-floor(N/2):floor((N-1)/2), -floor(M/2):floor((M-1)/2));
+D = sqrt(u.^2 + v.^2);  % Distance matrix
+cutoff = 30;  % Cutoff frequency
+H = double(D <= cutoff);  % Low-pass filter
+
+% Apply the filter in the frequency domain
+filteredDftImageShifted = dftImageShifted .* H;
+
+% Shift the filtered DFT back and compute the inverse DFT
+filteredDftImage = ifftshift(filteredDftImageShifted);
+filteredImage = ifft2(filteredDftImage);
+
+% Display the results
+figure;
+
+subplot(1, 2, 1);
+imshow(image, []);
+title('Original Image');
+
+subplot(1, 2, 2);
+imshow(uint8(filteredImage), []);
+title('Filtered Image');
+Additional Filters
+You can modify the code to apply different types of filters by changing the filter matrix H. For example:
+●	High-pass Filter: Passes high frequencies and blocks low frequencies. H = double(D > cutoff);
+●	Band-pass Filter: Passes frequencies within a certain range and blocks those outside. H = double(D > cutoff1 & D < cutoff2);
+Example of a High-Pass Filter:
+% Define a high-pass filter
+cutoff = 30;  % Cutoff frequency
+H = double(D > cutoff);  % High-pass filter
+Example of a Band-Pass Filter:
+% Define a band-pass filter
+cutoff1 = 20;  % Lower cutoff frequency
+cutoff2 = 60;  % Upper cutoff frequency
+H = double(D > cutoff1 & D < cutoff2);  % Band-pass filter
+
+Experiment 7:
+Displaying color images in MATLAB is straightforward, thanks to its powerful image processing capabilities. Here’s a comprehensive guide to loading, displaying, and manipulating color images in MATLAB:
+
+Basic Display of a Color Image
+To display a color image, you can use the imshow function. Here’s a simple example:
+% Read the color image
+colorImage = imread('your_image.png');  % Replace 'your_image.png' with your image file
+% Display the color image
+imshow(colorImage);
+title('Color Image');
+
+Display Multiple Color Images in a Single Figure
+To display multiple color images side-by-side or in a grid, you can use the subplot function:
+% Read multiple color images
+image1 = imread('image1.png');  % Replace 'image1.png' with your image file
+image2 = imread('image2.png');  % Replace 'image2.png' with another image file
+
+% Display the images in a 1x2 grid
+figure;
+subplot(1, 2, 1);
+imshow(image1);
+title('Image 1');
+
+subplot(1, 2, 2);
+imshow(image2);
+title('Image 2');
+
+Display a Color Image with Different Channels
+You can also display individual color channels (Red, Green, Blue) separately:
+% Read the color image
+colorImage = imread('your_image.png');  % Replace 'your_image.png' with your image file
+% Extract individual color channels
+redChannel = colorImage(:, :, 1);
+greenChannel = colorImage(:, :, 2);
+blueChannel = colorImage(:, :, 3);
+% Create a figure to display the channels
+subplot(2, 2, 1);
+imshow(colorImage);
+title('Original Color Image');
+subplot(2, 2, 2);
+imshow(redChannel, []);
+title('Red Channel');
+subplot(2, 2, 3);
+imshow(greenChannel, []);
+title('Green Channel');
+
+subplot(2, 2, 4);
+imshow(blueChannel, []);
+title('Blue Channel');
+
+Display a Color Image with a Custom Colormap
+You can use imshow with a custom colormap to visualize data in a color image:
+% Read the grayscale image
+grayImage = imread('your_image.png');  % Replace 'your_image.png' with your image file
+% Convert to double if necessary
+grayImage = double(grayImage);
+% Display the grayscale image with a custom colormap
+figure;
+imshow(grayImage, []);
+colormap(jet);  % Apply a 'jet' colormap
+colorbar;  % Show the color scale
+title('Grayscale Image with Jet Colormap');
+
+Displaying and Adjusting Color Image Properties
+You might also want to adjust the display properties or overlay additional information:
+% Read the color image
+colorImage = imread('your_image.png');  % Replace 'your_image.png' with your image file
+% Display the color image with specific display properties
+figure;
+imshow(colorImage, 'InitialMagnification', 'fit');  % Fit the image to the figure window
+title('Color Image with Fit Magnification');
+% Add a rectangle annotation
+hold on;
+rectangle('Position', [50, 50, 100, 100], 'EdgeColor', 'r', 'LineWidth', 2);
+hold off;
+
+Experiment 8:
+Converting between different color spaces in MATLAB is a common task in image processing. MATLAB provides built-in functions to handle several color space conversions. Here’s a guide on how to convert between some of the most commonly used color spaces: RGB, HSV, YCbCr, and Lab.
+
+1. RGB to HSV and Back
+RGB to HSV:
+% Read the color image
+rgbImage = imread('your_image.png');  % Replace 'your_image.png' with your image file
+% Convert RGB to HSV
+hsvImage = rgb2hsv(rgbImage);
+% Display the HSV image
+imshow(hsvImage);
+title('HSV Image');
+HSV to RGB:
+% Convert HSV back to RGB
+rgbImageRecovered = hsv2rgb(hsvImage);
+
+% Display the recovered RGB image
+imshow(rgbImageRecovered);
+title('Recovered RGB Image');
+
+2. RGB to YCbCr and Back
+RGB to YCbCr:
+% Convert RGB to YCbCr
+ycbcrImage = rgb2ycbcr(rgbImage);
+
+% Display the YCbCr image
+imshow(ycbcrImage);
+title('YCbCr Image');
+
+YCbCr to RGB:
+% Convert YCbCr back to RGB
+rgbImageRecovered = ycbcr2rgb(ycbcrImage);
+
+% Display the recovered RGB image
+figure;
+imshow(rgbImageRecovered);
+title('Recovered RGB Image from YCbCr');
+
+3. RGB to Lab and Back
+RGB to Lab:
+% Convert RGB to Lab
+labImage = rgb2lab(rgbImage);
+% Display the Lab image
+imshow(labImage);
+title('Lab Image');
+Lab to RGB:
+% Convert Lab back to RGB
+rgbImageRecovered = lab2rgb(labImage);
+
+% Display the recovered RGB image
+figure;
+imshow(rgbImageRecovered);
+title('Recovered RGB Image from Lab');
+
+4. RGB to Grayscale
+RGB to Grayscale:
+% Convert RGB to Grayscale
+grayImage = rgb2gray(rgbImage);
+
+% Display the grayscale image
+figure;
+imshow(grayImage);
+title('Grayscale Image');
+
+5. Custom Color Space Conversion
+For custom or less common color spaces, you might need to implement conversion formulas manually. Here’s an example of converting RGB to a custom color space and back:
+% Example of a custom color space conversion (e.g., a simplified version of YUV)
+% Convert RGB to YUV
+R = double(rgbImage(:,:,1));
+G = double(rgbImage(:,:,2));
+B = double(rgbImage(:,:,3));
+Y = 0.299 * R + 0.587 * G + 0.114 * B;
+U = -0.14713 * R - 0.28886 * G + 0.436 * B;
+V = 0.615 * R - 0.51499 * G - 0.10001 * B;
+yuvImage = cat(3, Y, U, V);
+% Display the YUV image
+imshow(yuvImage, []);
+title('Custom YUV Image');
+% Convert YUV back to RGB
+R_recovered = Y + 1.13983 * V;
+G_recovered = Y - 0.39465 * U - 0.58060 * V;
+B_recovered = Y + 2.03211 * U;
+rgbImageRecovered = cat(3, R_recovered, G_recovered, B_recovered);
+% Display the recovered RGB image
+imshow(uint8(rgbImageRecovered));
+title('Recovered RGB Image from Custom YUV');
+1.	
+
+Experiment 9:
+The Discrete Wavelet Transform (DWT) is a powerful tool in image processing for analyzing and processing image data at different scales and resolutions. MATLAB provides functions to compute the DWT and perform operations on the resulting wavelet coefficients. 
+1. Basic DWT Using dwt2 and idwt2
+Here’s a simple example of how to compute and display the 2D DWT of an image using MATLAB:
+% Read the grayscale image
+image = imread('your_image.png');  % Replace 'your_image.png' with your image file
+% Convert to grayscale if the image is in color
+if size(image, 3) == 3
+    image = rgb2gray(image);
+end
+% Convert image to double for DWT
+image = double(image);
+% Perform 2D DWT
+[LL, LH, HL, HH] = dwt2(image, 'haar');  % Use 'haar' or other wavelet types like 'db1', 'sym2'
+% Display the results
+figure;
+subplot(2, 2, 1);
+imshow(LL, []);
+title('Approximation Coefficients (LL)');
+subplot(2, 2, 2);
+imshow(LH, []);
+title('Horizontal Details (LH)');
+subplot(2, 2, 3);
+imshow(HL, []);
+title('Vertical Details (HL)');
+subplot(2, 2, 4);
+imshow(HH, []);
+title('Diagonal Details (HH)');
+o	
+
+2. Multiple Levels of DWT Using wavedec2
+For multi-level DWT, use the wavedec2 function:
+% Read the grayscale image
+image = imread('your_image.png');  % Replace 'your_image.png' with your image file
+
+% Convert to grayscale if the image is in color
+if size(image, 3) == 3
+    image = rgb2gray(image);
+end
+
+% Convert image to double for DWT
+image = double(image);
+
+% Perform multi-level 2D DWT
+level = 2;  % Number of levels
+[coeffs, sizes] = wavedec2(image, level, 'haar');
+
+% Extract coefficients
+LL = reshape(coeffs(1:sizes(1,1)*sizes(1,2)), sizes(1,1), sizes(1,2));
+LH = reshape(coeffs(sizes(1,1)*sizes(1,2)+1:sizes(1,1)*sizes(1,2)+sizes(2,1)*sizes(2,2)), sizes(2,1), sizes(2,2));
+HL = reshape(coeffs(sizes(1,1)*sizes(1,2)+sizes(2,1)*sizes(2,2)+1:sizes(1,1)*sizes(1,2)+sizes(2,1)*sizes(2,2)+sizes(3,1)*sizes(3,2)), sizes(3,1), sizes(3,2));
+HH = reshape(coeffs(sizes(1,1)*sizes(1,2)+sizes(2,1)*sizes(2,2)+sizes(3,1)*sizes(3,2)+1:end), sizes(3,1), sizes(3,2));
+
+% Display the results
+subplot(2, 2, 1);
+imshow(LL, []);
+title('Approximation Coefficients (LL)');
+
+subplot(2, 2, 2);
+imshow(LH, []);
+title('Horizontal Details (LH)');
+
+subplot(2, 2, 3);
+imshow(HL, []);
+title('Vertical Details (HL)');
+
+subplot(2, 2, 4);
+imshow(HH, []);
+title('Diagonal Details (HH)');
+o	
+3. Inverse DWT Using idwt2
+If you want to reconstruct the image from its wavelet coefficients, you can use idwt2:
+% Reconstruct the image from the DWT coefficients
+reconstructedImage = idwt2(LL, LH, HL, HH, 'haar');
+% Display the reconstructed image
+figure;
+imshow(uint8(reconstructedImage));
+title('Reconstructed Image');
+
+Experiment 10:
+The watershed transform is a popular technique for image segmentation, especially useful for separating overlapping objects. It works by treating the gradient of the image as a topographic surface and finding the "watershed lines" that separate different regions.
+Here’s a step-by-step guide to perform segmentation using the watershed transform in MATLAB:
+Example Code for Watershed Transform
+% Read the grayscale image
+image = imread('your_image.png');  % Replace 'your_image.png' with your image file
+
+% Convert to grayscale if the image is in color
+if size(image, 3) == 3
+    image = rgb2gray(image);
+end
+
+% Convert image to double for processing
+image = double(image);
+
+% Compute the gradient magnitude
+[gradientX, gradientY] = gradient(image);
+gradientMagnitude = sqrt(gradientX.^2 + gradientY.^2);
+
+% Apply a threshold to create a binary image (marker image)
+binaryImage = imbinarize(gradientMagnitude, graythresh(gradientMagnitude));
+
+% Invert binary image to prepare for watershed transform
+binaryImage = ~binaryImage;
+
+% Perform morphological operations to clean up the image
+se = strel('disk', 5);
+cleanImage = imopen(binaryImage, se);
+
+% Distance transform
+distanceTransform = -bwdist(cleanImage);
+
+% Apply watershed transform
+watershedImage = watershed(distanceTransform);
+
+% Mark watershed lines as boundaries
+watershedImage = label2rgb(watershedImage, 'hsv', 'k', 'shuffle');
+
+% Display results
+figure;
+
+subplot(2, 2, 1);
+imshow(image, []);
+title('Original Image');
+
+subplot(2, 2, 2);
+imshow(gradientMagnitude, []);
+title('Gradient Magnitude');
+
+subplot(2, 2, 3);
+imshow(binaryImage, []);
+title('Binary Image');
+
+subplot(2, 2, 4);
+imshow(watershedImage);
+title('Watershed Transform Result');
+
+
+
+
+
